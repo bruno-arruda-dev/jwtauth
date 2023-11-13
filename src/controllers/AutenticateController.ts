@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import { FieldVerification } from '../middlewares/FieldVerification';
 import { UserExists } from '../services/UserExists';
