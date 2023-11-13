@@ -18,9 +18,16 @@ class RegisterService {
             password
         })
 
-        await user.save();
+        try {
+            
+            await user.save();
+            return user;
 
-        return user;
+        } catch (error) {
+
+            return error;
+            
+        }
 
     }
 }

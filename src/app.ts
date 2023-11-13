@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import jwt from 'jsonwebtoken';
 import connectDB from './models/db';
 import { router } from './routes/routes';
 

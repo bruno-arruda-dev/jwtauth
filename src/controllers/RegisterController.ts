@@ -29,7 +29,7 @@ class RegisterController {
                 return;
             }
 
-            // 1.3 - Email verification middleware
+            // 1.3 - password verification middleware
             if (!FieldVerification("password", password, res)) {
                 return;
             }
@@ -53,11 +53,11 @@ class RegisterController {
             // 3 - CREATE USER
             const registerService = new RegisterService();
             const currentRegister = await registerService.execute({ name, email, password: passwordHash });
-            res.status(200).json(`Registered: ${name} ${email}`);
+            res.status(201).json(`Registered: ${name} ${email}`);
 
         } catch (error) {
 
-            console.error(`Erro no registro: ${error}`);
+            console.error(`Registration failed. Please check your information and try again.: ${error}`);
             res.status(500).json({ error: 'Registration failed. Please check your information and try again.' });
 
         }
