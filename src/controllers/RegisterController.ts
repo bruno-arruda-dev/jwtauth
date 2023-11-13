@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 import { RegisterService } from '../services/RegisterService';
 import { FieldVerification } from '../middlewares/FieldVerification';
 import { PasswordMatchVerification } from '../middlewares/PasswordMatchVerification';
+import { UserExists } from '../services/UserExists';
 
 type TRegisterRequestBody = {
     name: string,
@@ -15,30 +17,42 @@ class RegisterController {
         try {
             const { name, email, password, confirmPassword } = req.body;
 
-            // VERIFICATIONS
+            // 1 - VERIFICATIONS
 
-            // Name verification middleware
+            // 1.1 - Name verification middleware
             if (!FieldVerification("name", name, res)) {
                 return;
             }
 
-            // Email verification middleware
+            // 1.2 - Email verification middleware
             if (!FieldVerification("email", email, res)) {
                 return;
             }
 
-            // Email verification middleware
+            // 1.3 - Email verification middleware
             if (!FieldVerification("password", password, res)) {
                 return;
             }
 
-            // Passwords match verification
+            // 1.4 - Passwords match verification
             if (!PasswordMatchVerification(password, confirmPassword, res)) {
                 return;
             }
 
+            // 1.5 - Check if user exists
+            const userExists = await UserExists({ email });
+
+            if (userExists) {
+                return res.status(422).json({ msg: "User with this email already exists." });
+            }
+
+            // 2 - CREATE PASSWORD
+            const salt = await bcrypt.genSalt(12);
+            const passwordHash = await bcrypt.hash(password, salt);
+
+            // 3 - CREATE USER
             const registerService = new RegisterService();
-            const currentRegister = registerService.execute({ name, email, password, confirmPassword });
+            const currentRegister = await registerService.execute({ name, email, password: passwordHash });
             res.status(200).json(`Registered: ${name} ${email}`);
 
         } catch (error) {

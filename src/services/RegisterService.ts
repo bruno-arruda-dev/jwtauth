@@ -1,16 +1,27 @@
+import { UserModel } from "../models/User";
+
 type TRegisterType = {
     name: string, 
     email: string,
     password: string, 
-    confirmPassword: string,
 }
 
 class RegisterService {
 
     
-    async execute({ name, email, password, confirmPassword }: TRegisterType) {
-
+    async execute({ name, email, password }: TRegisterType) {
         console.log(`Cadastrando: ${name}`);
+
+        const user = new UserModel({
+            name,
+            email,
+            password
+        })
+
+        await user.save();
+
+        return user;
+
     }
 }
 
