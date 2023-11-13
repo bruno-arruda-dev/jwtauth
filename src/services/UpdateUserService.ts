@@ -16,22 +16,26 @@ class UpdateUserService {
 
         // 1 - VERIFICATIONS
 
-        // 
+        // 1.1 - ID verification
         if (!props.id) {
             throw new Error("Invalid argument to update.");
         }
-
+        
+        // 1.2 Get user from database
         const findUser = await UserModel.findOne({ _id: props.id });
-
+        
+        // 1.2.1 - Check if user was founded
         if (!findUser) {
             throw new Error("User not found.");
         }
 
+        // 2 - Object mount
         const updateUserData = { ...props };
 
+        // 3 - Update user on database
         const updatedUserData = await UserModel.findOneAndUpdate( { _id: props.id }, updateUserData, { new: true } );
 
-        console.log(`USERDATA: ${updatedUserData}`)
+        return updatedUserData;
 
     }
 }

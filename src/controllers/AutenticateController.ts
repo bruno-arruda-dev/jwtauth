@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { FieldVerification } from '../middlewares/FieldVerification';
 import { UserExists } from '../services/UserExists';
 import { TokenGenerator } from '../middlewares/TokenGenerator';
+import { UpdateUserService } from '../services/UpdateUserService';
 
 type TAutenticateController = {
     email: string,
@@ -33,16 +34,23 @@ class AutenticateController {
                 return res.status(422).json({ msg: "User not found." });
             }
 
-            // Check if password match
+            // 1.4 - Check if password match
             const checkPassword = await bcrypt.compare(password, userExists.password);
             if (!checkPassword) {
                 return res.status(422).json({msg: "Wrong password!"});
             }
 
-            // JWT Token generate
-            const token = TokenGenerator(userExists._id);
+            // 2 - TOKEN MANAGER
 
-            res.status(200).json({ msg: "Autentication sucsess", token });
+            // 2.1 - JWT Token generate
+            const userId = userExists._id;
+            const userName = userExists.username;
+            const token = TokenGenerator(userId) as string;
+
+            // 2.2 - Save token on database
+            const tokenSaved = new UpdateUserService().execute({id: userId, username: userName, token});
+
+            res.status(200).json({ msg: "Autentication sucsess", userId, userName, token });
 
         } catch (error) {
 

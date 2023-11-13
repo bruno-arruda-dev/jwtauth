@@ -32,7 +32,7 @@ class RegisterController {
                 return;
             }
 
-            // 1.3 - password verification middleware
+            // 1.3 - Password verification middleware
             if (!FieldVerification("password", password, res)) {
                 return;
             }
@@ -53,36 +53,39 @@ class RegisterController {
             const salt = await bcrypt.genSalt(12);
             const passwordHash = await bcrypt.hash(password, salt);
 
-            
             // 3 - CREATE USER -> SAVE ON DATABASE
             const registerService = new RegisterService();
             const currentRegister = await registerService.execute({ name, email, password: passwordHash });
-            res.status(201).json(`Registered: ${name} ${email}`);
 
-            // 4 - ADITIONAL GENERATIONS
+            // 4 - ADDITIONAL GENERATIONS
 
-            // 4.1 - Check if step 3 was succefull
+            // 4.1 - Check if step 3 was successful
             const savedUser = await UserExists({ email });
 
             if (!savedUser) {
                 return res.status(422).json({ msg: "User not found." });
             }
-            
-            // 4.2 - Username generate
+
+            // 4.2 - Username generation
             const username = UsernameGenerator({ name, id: savedUser._id });
-            
-            // 4.3 - JWT Token generate
+
+            // 4.3 - JWT Token generation
             const token = TokenGenerator(savedUser._id) as string;
 
             // 5 - UPDATE USER CREATED
+            const updatedUserData = new UpdateUserService().execute({ id: savedUser._id, username, token });
 
-                new UpdateUserService().execute({ id: savedUser._id, username, token });
+            // 6 - FEEDBACK
+            const createdName = name;
+            const createdUserame = username;
+            const createdEmail = email;
+            const createdToken = token;
+
+            res.status(200).json({createdName, createdUserame, createdEmail, createdToken});
 
         } catch (error) {
-
-            console.error(`Registration failed. Please check your information and try again.: ${error}`);
+            console.error(`Registration failed. Please check your information and try again: ${error}`);
             res.status(500).json({ error: 'Registration failed. Please check your information and try again.' });
-
         }
     }
 }
