@@ -11,6 +11,8 @@ const app = express();
 // CONNECT TO THE DATABASE
 connectDB();
 
+app.use(express.json());
+
 // ROUTES
 app.use(router);
 
