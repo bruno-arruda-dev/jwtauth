@@ -6,6 +6,7 @@ import { PasswordMatchVerification } from '../middlewares/PasswordMatchVerificat
 import { UserExists } from '../services/UserExists';
 import { UsernameGenerator } from '../middlewares/UsernameGenerator';
 import { TokenGenerator } from '../middlewares/TokenGenerator';
+import { UpdateUserService } from '../services/UpdateUserService';
 
 type TRegisterRequestBody = {
     name: string,
@@ -66,14 +67,16 @@ class RegisterController {
             if (!savedUser) {
                 return res.status(422).json({ msg: "User not found." });
             }
-
+            
             // 4.2 - Username generate
-                const username = UsernameGenerator({ name, id: savedUser._id });
-                console.log(`Username gerado: ${username}`);
-                
-                // 4.3 - JWT Token generate
-                const token = TokenGenerator(savedUser._id);
-                console.log(`Token gerado: ${token}`);
+            const username = UsernameGenerator({ name, id: savedUser._id });
+            
+            // 4.3 - JWT Token generate
+            const token = TokenGenerator(savedUser._id) as string;
+
+            // 5 - UPDATE USER CREATED
+
+                new UpdateUserService().execute({ id: savedUser._id, username, token });
 
         } catch (error) {
 

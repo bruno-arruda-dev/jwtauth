@@ -10,7 +10,6 @@ class RegisterService {
 
     
     async execute({ name, email, password }: TRegisterType) {
-        console.log(`Cadastrando: ${name}`);
 
         const user = new UserModel({
             name,
