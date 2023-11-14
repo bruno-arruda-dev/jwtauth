@@ -11,8 +11,10 @@ router.post('/auth/login', async (req, res) => {
     return new AutenticateController().handle(req, res);
 })
 
-router.put('/user/:id', (req, res) => {
-    res.status(200).json({msg: "Bem vindo a rota privada!"});
+router.post('/user/:id/', (req, res) => {
+    const username = req.headers.id;
+    const token = req.body.token;
+    res.status(200).json({msg: "Bem vindo a rota privada!", username, token});
 })
 
 export { router };
