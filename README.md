@@ -3,6 +3,7 @@
 
 Este projeto é uma API para cadastrar, autenticar e fornecer rotas privadas para usuários.
 
+---
 
 ## Funcionalidades
 
@@ -13,6 +14,7 @@ Este projeto é uma API para cadastrar, autenticar e fornecer rotas privadas par
 - Token gerado com Jsonwebtoken (JWT)
 - Senha criptografada com bcrypt
 
+---
 
 ## Stack utilizada
 
@@ -22,6 +24,7 @@ Este projeto é uma API para cadastrar, autenticar e fornecer rotas privadas par
 
 **Segurança:** bcrypt, Jasonwebtoken
 
+---
 
 ## Instalação
 
@@ -31,7 +34,9 @@ Para instalar as dependências rode os comandos abaixo:
   cd my-project
   npm install
 ```
-    
+
+---    
+
 ## Variáveis de Ambiente
 
 Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
@@ -40,6 +45,7 @@ Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de
 
 `SECRET`: Secret exigido pelo JWT na criação de tokens.
 
+---
 
 ## Endpoints
 
@@ -95,6 +101,7 @@ Enviar JSON no body da requisição:
 |*"msg": "Passwords do not match. Please try again."* | "confirmPassword" não informado ou diferente de "password". | Informar a confirmação de senha e garantir que seu valor seja igual ao valor da senha. |
 | *"msg": "User with this email already exists."* | Usuário já cadastrado com este email. | Cadastre com um email diferente. |
 
+
 - ### /auth/login
 
 Enviar JSON no body da requisição:
@@ -132,5 +139,3 @@ Enviar JSON no body da requisição:
 | *"msg": "Please provide your email."* | "email" não informado.. | Informar o email do usuário. |
 | *"msg": "User not found."* | "email" informado não corresponde a nenhum usuário cadastrado. | Informar o email correto. |
 | *"msg": "Please provide your password."* | "password" não informado. | Informar a senha do usuário. |
-|*"msg": "Passwords do not match. Please try again."* | "confirmPassword" não informado ou diferente de "password". | Informar a confirmação de senha e garantir que seu valor seja igual ao valor da senha. |
-| *"msg": "User with this email already exists."* | Usuário já cadastrado com este email. | Cadastre com um email diferente. |
