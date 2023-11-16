@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { FieldVerification } from '../middlewares/FieldVerification';
-import { UserExists } from '../services/UserExists';
 import { TokenGenerator } from '../middlewares/TokenGenerator';
 import { UpdateUserService } from '../services/UpdateUserService';
+import { UserModel } from '../models/User';
 
 type TAutenticateController = {
     email: string,
@@ -28,7 +28,7 @@ class AutenticateController {
             }
 
             // 1.3 - Check if user exists
-            const userExists = await UserExists({ email });
+            const userExists = await UserModel.findOne({ email });
 
             if (!userExists) {
                 return res.status(422).json({ msg: "User not found." });
@@ -48,7 +48,7 @@ class AutenticateController {
             const token = TokenGenerator(userId) as string;
 
             // 2.2 - Save token on database
-            const tokenSaved = new UpdateUserService().execute({id: userId, username: userName, token});
+            const tokenSaved = new UpdateUserService().execute(userId, { token });
 
             res.status(200).json({ msg: "Autentication sucsess", userId, userName, token });
 

@@ -3,10 +3,10 @@ import bcrypt from 'bcrypt';
 import { RegisterService } from '../services/RegisterService';
 import { FieldVerification } from '../middlewares/FieldVerification';
 import { PasswordMatchVerification } from '../middlewares/PasswordMatchVerification';
-import { UserExists } from '../services/UserExists';
 import { UsernameGenerator } from '../middlewares/UsernameGenerator';
 import { TokenGenerator } from '../middlewares/TokenGenerator';
 import { UpdateUserService } from '../services/UpdateUserService';
+import { UserModel } from '../models/User';
 
 type TRegisterRequestBody = {
     name: string,
@@ -43,7 +43,7 @@ class RegisterController {
             }
 
             // 1.5 - Check if user exists
-            const userExists = await UserExists({ email });
+            const userExists = await UserModel.findOne({ email });
 
             if (userExists) {
                 return res.status(422).json({ msg: "User with this email already exists." });
@@ -60,28 +60,29 @@ class RegisterController {
             // 4 - ADDITIONAL GENERATIONS
 
             // 4.1 - Check if step 3 was successful
-            const savedUser = await UserExists({ email });
+            const savedUser = await UserModel.findOne({ email });
 
             if (!savedUser) {
                 return res.status(422).json({ msg: "User not found." });
             }
 
+            const id = savedUser._id;
+
             // 4.2 - Username generation
-            const username = UsernameGenerator({ name, id: savedUser._id });
+            const username = UsernameGenerator({ name, id});
 
             // 4.3 - JWT Token generation
-            const token = TokenGenerator(savedUser._id) as string;
+            const token = TokenGenerator(id) as string;
+
+            const aditionalData = {username: username, token: token}
 
             // 5 - UPDATE USER CREATED
-            const updatedUserData = new UpdateUserService().execute({ id: savedUser._id, username, token });
+            const updatedUserData = new UpdateUserService().execute(id, aditionalData);
 
             // 6 - FEEDBACK
-            const createdName = name;
-            const createdUserame = username;
-            const createdEmail = email;
-            const createdToken = token;
+            const createdUser = await UserModel.findOne({ token }).select("-password");
 
-            res.status(200).json({createdName, createdUserame, createdEmail, createdToken});
+            res.status(200).json(createdUser);
 
         } catch (error) {
             console.error(`Registration failed. Please check your information and try again: ${error}`);
