@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt'
 import { AutenticateSession } from '../middlewares/AutenticateSession';
 import { UpdateUserService } from '../services/UpdateUserService';
+import { UsernameGenerator } from '../middlewares/UsernameGenerator';
 
 class UpdateUserController {
     async handle(req: Request, res: Response) {
@@ -18,11 +19,10 @@ class UpdateUserController {
             const body = {} as {name?: string, username?: string, email?: string, password?: string, token?: string};
 
             if (req.body.name) {
-                body.name = req.body.name
-            }
-            
-            if (req.body.username) {
-                body.username = req.body.username
+                const name = req.body.name;
+                const username = UsernameGenerator({name, id});
+                body.name = req.body.name;
+                body.username = username;
             }
 
             if (req.body.email) {
