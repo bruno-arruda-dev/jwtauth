@@ -14,8 +14,6 @@ class UpdateUserService {
     async execute(id: string, body: TUpdateUserServiceProps): Promise<any> {
         const { name, username, email, password, token } = body;
 
-        console.log(body)
-
         // 1 - VERIFICATIONS
 
         // 1.1 - ID verification
@@ -57,7 +55,7 @@ class UpdateUserService {
 
             // 3 - Update user on database
             const updatedUserData = await UserModel.findOneAndUpdate({ _id: findUser._id }, updateUserData, { new: true });
-
+            console.log(`User updated`);
             return updatedUserData;
 
         } catch (error: any) {

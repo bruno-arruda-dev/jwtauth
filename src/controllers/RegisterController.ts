@@ -85,8 +85,10 @@ class RegisterController {
             res.status(200).json(createdUser);
 
         } catch (error) {
+
             console.error(`Registration failed. Please check your information and try again: ${error}`);
             res.status(500).json({ error: 'Registration failed. Please check your information and try again.' });
+       
         }
     }
 }
