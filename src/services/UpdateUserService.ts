@@ -54,7 +54,7 @@ class UpdateUserService {
             }
 
             // 3 - Update user on database
-            const updatedUserData = await UserModel.findOneAndUpdate({ _id: findUser._id }, updateUserData, { new: true });
+            const updatedUserData = await UserModel.findOneAndUpdate({ _id: findUser._id }, updateUserData, { new: true }).select(["-password", "-__v"]);
             console.log(`User updated`);
             return updatedUserData;
 

@@ -139,3 +139,69 @@ Enviar JSON no body da requisição:
 | *"msg": "Please provide your email."* | "email" não informado.. | Informar o email do usuário. |
 | *"msg": "User not found."* | "email" informado não corresponde a nenhum usuário cadastrado. | Informar o email correto. |
 | *"msg": "Please provide your password."* | "password" não informado. | Informar a senha do usuário. |
+
+- ### /user/:id
+
+Rota privada, a solicitação somente será atendida se os critérios obrigatórios forem obedecidos.
+
+Enviar nos headers da requisição:
+
+**Campos obrigatórios:** "id", "token". O middleware de validação irá verificaros campos do header.
+
+*Exemplo:*
+```
+{
+	"id": "65560ed529bf767827461452",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6eyJ0eXBlIjoiQnVmZmVyIiwiZGF0YSI6WzEwMSw4Niw0MCwyNDQsMTM0LDEyNywxMjAsNSw3NCwyNDksMTUxLDEwNl19LCJpYXQiOjE3MDAxNDY0Nzl9.Cj9GTSST3ChPbNHHYGw1ahYP3NonfGj-AKnS_0ixum0"
+}
+```
+
+Enviar JSON no body da requisição:
+
+**Campos opcionais:** "name", "email", "password" junto de "confirmPassword".
+
+Obs.: Caso o "password" seja enviado, o campo "confirmPassword" é obrigatório.
+
+*Exemplo:*
+
+```
+{
+    "name":"Bruno Arruda Magalhães",
+	  "email": "newemail@email.com",
+    "password": "123456789",
+    "confirmPassword": "123456789"
+}
+```
+
+*Retorno da API:*
+```
+{
+    "msg": "Updated!",
+    "updatedUserData": {
+        "_id": "65560ed529bf767827461452",
+        "name": "Susanna Sarah",
+        "email": "susanna.sarah.22@gmail.com",
+        "__v": 0,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6eyJ0eXBlIjoiQnVmZmVyIiwiZGF0YSI6WzEwMSw4NiwxNCwyMTMsNDEsMTkxLDExOCwxMjAsMzksNzAsMjAsODJdfSwiaWF0IjoxNzAwMTM4NzM2fQ.My6y3yiX4_Z83sy86Q43u2agcU9bEC92ntrgscj7x38",
+        "username": "susannasarah65597"
+    }
+}
+```
+
+
+- **msg"**: Confirmação de login;
+- **"updatedUserData"**: Objeto contendo os dados atualizados, exceto password;
+- **"userName"**: Username gerado ao se cadastrar;
+-- **"_id"**: Id do usuário atualizado;
+-- **"name"**: Nome do usuário atualizado;
+-- **"email"**: Email do usuário atualizado;
+-- **"token"**: Token do usuário atualizado;
+-- **"Username"**: Username do usuário atualizado;
+
+*Possíveis erros*
+
+| **ERRO** | **CAUSA** | **SOLUÇÃO** |
+| :---: | :---: | :---: |
+| *"msg": "Please provide your email."* | "email" não informado.. | Informar o email do usuário. |
+| *"msg": "User not found."* | "email" informado não corresponde a nenhum usuário cadastrado. | Informar o email correto. |
+| *"msg": "Please provide your password."* | "password" não informado. | Informar a senha do usuário. |
