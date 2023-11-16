@@ -220,3 +220,11 @@ Enviar via props ```req``` e ```res```.
 A função retornará uma string, caso a autenticação ocorra com sucesso:
 
 ```Authenticated```
+
+---
+
+## Aprendizados
+
+Eu pretendo elevar o nível dos meus projetos e, acredito que uma ótima implementação seria um sistema de login e rotas privadas, a fim de garantir ao usuário melhor personalização dos sistemas que desenvolvo.
+
+Este projeto foi muito importante para mim, pois, além de praticar NodeJS e CRUD com Express, pude entender melhor a lógica de autenticação via token.
