@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt'
-import { AutenticateSession } from '../middlewares/AutenticateSession';
+import { AuthenticateSession } from '../middlewares/AuthenticateSession';
 import { UpdateUserService } from '../services/UpdateUserService';
 import { UsernameGenerator } from '../middlewares/UsernameGenerator';
 
@@ -8,7 +8,7 @@ class UpdateUserController {
     async handle(req: Request, res: Response) {
         try {
             // Autenticate session middleware
-            const authenticatedSession = await AutenticateSession(req, res);
+            const authenticatedSession = await AuthenticateSession(req, res);
 
             if (authenticatedSession !== "Authenticated") {
                 return;

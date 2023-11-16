@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { UserModel } from '../models/User';
 
-const AutenticateSession = async (req: Request<{}, {}>, res: Response) => {
+const AuthenticateSession = async (req: Request<{}, {}>, res: Response) => {
 
     try {
 
@@ -33,4 +33,4 @@ const AutenticateSession = async (req: Request<{}, {}>, res: Response) => {
 
 }
 
-export { AutenticateSession };
+export { AuthenticateSession };
