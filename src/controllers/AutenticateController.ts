@@ -7,7 +7,7 @@ import { UserModel } from '../models/User';
 
 type TAutenticateController = {
     email: string,
-    password: string
+    password: string,
 }
 
 class AutenticateController {
