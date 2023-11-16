@@ -190,7 +190,6 @@ Obs.: Caso o "password" seja enviado, o campo "confirmPassword" é obrigatório.
 
 - **msg"**: Objeto contendo a confirmação da operação;
 - **"updatedUserData"**: Objeto contendo os dados atualizados, exceto password;
-- - **"userName"**: Username gerado ao se cadastrar;
 - - **"_id"**: Id do usuário atualizado;
 - - **"name"**: Nome do usuário atualizado;
 - - **"email"**: Email do usuário atualizado;
@@ -201,6 +200,23 @@ Obs.: Caso o "password" seja enviado, o campo "confirmPassword" é obrigatório.
 
 | **ERRO** | **CAUSA** | **SOLUÇÃO** |
 | :---: | :---: | :---: |
-| *"msg": "Please provide your email."* | "email" não informado.. | Informar o email do usuário. |
-| *"msg": "User not found."* | "email" informado não corresponde a nenhum usuário cadastrado. | Informar o email correto. |
-| *"msg": "Please provide your password."* | "password" não informado. | Informar a senha do usuário. |
+| *""msg": "This user are not owner of this token"* | "id" ou "token" nos headers da requisição não se correspondem. | Enviar o id e token corretamente. |
+| *"msg": "Password and confirmPassword doesnt match."* | Tentativa de alterar o password sem enviar "confirmPassword". | Enviar "confirmPassword. |
+
+## AuthenticateSession Middleware para garantir rota privada.
+
+Middleware que deve ser chamado dentro do seu controller, a fim de que o mesmo autentique o usuário da solicitação.
+
+Exemplo:
+
+```
+// Autenticate session middleware
+
+const authenticatedSession = await AutenticateSession(req, res);
+```
+
+Enviar via props ```req``` e ```res```.
+
+A função retornará uma string, caso a autenticação ocorra com sucesso:
+
+```Authenticated```

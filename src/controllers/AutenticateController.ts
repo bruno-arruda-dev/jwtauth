@@ -51,6 +51,7 @@ class AutenticateController {
             const tokenSaved = new UpdateUserService().execute(userId, { token });
 
             res.status(200).json({ msg: "Autentication sucsess", userId, userName, token });
+            return;
 
         } catch (error) {
 

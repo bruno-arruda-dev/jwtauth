@@ -11,7 +11,7 @@ class UpdateUserController {
             const authenticatedSession = await AutenticateSession(req, res);
 
             if (authenticatedSession !== "Authenticated") {
-                throw new Error("Unable to authenticate");
+                return;
             }
 
             const id = req.headers.id as string;
@@ -36,7 +36,7 @@ class UpdateUserController {
                     return res.status(500).json({msg: "Password change must have 'confirmPassword' field."})
                 
                 } else {
-                    console.log("Entrou no else")
+
                     if (req.body.password === req.body.confirmPassword) {
 
                         const salt = await bcrypt.genSalt(12);
